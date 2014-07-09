@@ -1,0 +1,5 @@
+INDEX VERSION 1.126+/Users/andrew/Documents/Groupit/.metadata/.plugins/org.eclipse.jdt.core
+1230007167.index
+3956508052.index
+1270315800.index
+1914172679.index
