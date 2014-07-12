@@ -11,7 +11,11 @@
 # Generated files
 bin/
 gen/
-
+Groupit/bin/
+Groupit/gen/
+appcompat_v7/bin/
+appcompat_v7/gen/
+.metadata/
 # Gradle files
 .gradle/
 build/
