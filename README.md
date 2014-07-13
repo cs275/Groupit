@@ -4,7 +4,7 @@ Groupit
 To Run the app:
  1. run "git clone https://github.com/cs275/Groupit.git"
  2. Open eclipse select Groupit/app/ as the workspace.
- 3. Got to  file->import->Android->Existing->Browse
+ 3. Got to  file->import->General->Existing->Browse
  4. Select the repository's base directory.
  5. Restart eclipse.
  6. Right click on Groupit, click run, run as android application.
