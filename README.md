@@ -6,6 +6,7 @@ To Run the app:
  2. Open eclipse select Groupit/app/ as the workspace.
  3. Got to  file->import->General->Existing->Browse
  4. Select the repository's base directory.
+ 5. Unckeck "Copy files into workspace"
  5. Restart eclipse.
  6. Right click on Groupit, click run, run as android application.
 
