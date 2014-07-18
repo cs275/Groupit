@@ -43,6 +43,8 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.model.GraphMultiResult;
 
+import com.google.gson.*;
+
 
 
 
@@ -53,6 +55,7 @@ public class Login extends Activity {
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
     private Request.GraphUserCallback userCallback = new UserRequestCallback();
+    Intent i = new Intent(Login.this, Dashboard.class);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,12 +137,16 @@ public class Login extends Activity {
 	            	         	for (int i=0; i<groups.length(); i++){
 	            	         		s+="     " + groups.getJSONObject(i).getString("name")+"\n";
 	            	         	}
+	            	         	i.putExtra("groups", new Gson().toJson(groups));
+						        startActivity(i);
+						        return;
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							
 	            	        }
 							textInstructionsOrLink.setText(textInstructionsOrLink.getText()+s);
+							
             	        }
             	    }
             	).executeAsync();
@@ -187,8 +194,8 @@ public class Login extends Activity {
 			// TODO Auto-generated method stub
 			Log.d("Your name is: ",user.getFirstName());
 			textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
-			
-			Log.d("From Callback.response: ",response.getGraphObject().asMap().keySet().toString());
+			i.putExtra("user", new Gson().toJson(user));
+			//Log.d("From Callback.response: ",response.getGraphObject().asMap().keySet().toString());
 		}
     }
 }
