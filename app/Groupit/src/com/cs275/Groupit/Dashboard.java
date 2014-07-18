@@ -1,5 +1,7 @@
 package com.cs275.Groupit;
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,10 +20,11 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
-import com.google.gson.*;
 
+import com.google.gson.*;
 import com.facebook.model.GraphUser;
 
 public class Dashboard extends ActionBarActivity implements
@@ -38,15 +42,30 @@ public class Dashboard extends ActionBarActivity implements
 	 */
 	private CharSequence mTitle;
 	
-	GraphUser user;
-	JsonArray groups;
+	Map<String, Object> user;
+	JSONArray groups;
+	FacebookHelper helper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		
-		initFBData(savedInstanceState);
+		helper = new FacebookHelper(FacebookHelper.getSession(this));
+		groups = helper.getGroups(this, new FacebookHelper.Callback(){
+			@Override
+			public void finished(Object g) {
+				Log.d("Debug", ((GraphUser)g).toString());
+			}
+		});
+		user = helper.getUser(this, new FacebookHelper.Callback(){
+			@SuppressWarnings("unchecked")
+			@Override
+			public void finished(Object u) {
+				Log.d("Debug", ((Map<String, Object>)u).toString());
+			}
+		});
+		
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -55,17 +74,6 @@ public class Dashboard extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
-	}
-	
-	private void initFBData(Bundle bundle){
-		String userString="", groupsString="";
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-		   userString = extras.getString("user");
-		   groupsString = extras.getString("groups");
-		}
-		user = new Gson().fromJson(userString, GraphUser.class);
-		groups =  new Gson().fromJson(groupsString, JsonArray.class);
 	}
 
 	@Override

@@ -3,6 +3,8 @@
  */
 package com.cs275.Groupit;
 
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -14,6 +16,7 @@ import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
 
 /**
@@ -24,6 +27,7 @@ public class FacebookHelper {
 	
 	private static JSONArray groups;
 	private static Session session;
+	private static Map<String, Object> user;
 	
 	/**
 	 * 
@@ -44,17 +48,34 @@ public class FacebookHelper {
 	 * The context of the calling activity.
 	 * @return
 	 * A static version of the groups if available, or  sharedPreference if available, else, it will go to Facebook and fetch the data.
+	 * Note if this is the first time getting the users groups, then it will return null.
 	 */
-	public JSONArray getGroups(Context c){
+	public JSONArray getGroups(Context c, Callback...call){
 		if (groups!=null) return groups;
 		
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
 		String groupsString = sp.getString("groups", null);
 		
-		if (groupsString==null) return fetchGroups(c);
+		if (groupsString==null) {
+			fetchGroups(c, call);
+			return groups;
+		}
 		
 		groups = new Gson().fromJson(groupsString, JSONArray.class);
 		return groups;
+	}
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getUser(Context c, Callback... call){
+		if (user!=null)
+			return user;
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+		String userString = sp.getString("user", null);
+		if (userString==null) {
+			fetchUser(c, call);
+			return user;
+		}
+		user = new Gson().fromJson(userString, Map.class);
+		return null;
 	}
 	
 	/**
@@ -62,9 +83,9 @@ public class FacebookHelper {
 	 * @param c
 	 * @return
 	 */
-	private JSONArray fetchGroups(final Context c){
-		 new Request(
-         	    session,
+	public void fetchGroups(final Context c, final Callback... call){
+		new Request(
+				session,
          	    "/me/groups",
          	    null,
          	    HttpMethod.GET,
@@ -75,15 +96,34 @@ public class FacebookHelper {
 							try {
 								groups = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
 								SharedPreferences prefs = c.getSharedPreferences(
-									      "com.example.app", Context.MODE_PRIVATE);
+									      "com.cs275.Groupit", Context.MODE_PRIVATE);
 								prefs.edit().putString("groups", new Gson().toJson(groups));
+								if (call.length>0)call[0].finished(groups);
 							} catch (JSONException e) {
 								e.printStackTrace();
 	            	        }
          	        	}
          	        }
          	    }
-         	).executeAndWait();
-		 	return groups;
+         	).executeAsync();
 	}
+	
+	public void fetchUser(final Context c, final Callback... call){
+		Request.newMeRequest(session, new Request.GraphUserCallback() {
+			@Override
+			public void onCompleted(GraphUser _user, Response response) {
+				user=_user.asMap();
+				SharedPreferences prefs = c.getSharedPreferences(
+					      "com.cs275.Groupit", Context.MODE_PRIVATE);
+				prefs.edit().putString("user", new Gson().toJson(user));
+				if (call.length>0)call[0].finished(user);
+			}
+		}).executeAsync();
+	}
+	
+	// The callback interface
+	interface Callback {
+	    void finished(Object g);
+	}
+	
 }

@@ -55,12 +55,16 @@ public class Login extends Activity {
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
     private Request.GraphUserCallback userCallback = new UserRequestCallback();
-    Intent i = new Intent(Login.this, Dashboard.class);
+    Intent i;
+    private int count=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        
+        i=new Intent(this, Dashboard.class);
+        
         buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
@@ -80,6 +84,7 @@ public class Login extends Activity {
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
+                new FacebookHelper(session);
             }
         }
 
@@ -137,9 +142,8 @@ public class Login extends Activity {
 	            	         	for (int i=0; i<groups.length(); i++){
 	            	         		s+="     " + groups.getJSONObject(i).getString("name")+"\n";
 	            	         	}
-	            	         	i.putExtra("groups", new Gson().toJson(groups));
-						        startActivity(i);
-						        return;
+	            	         	//i.putExtra("groups", new Gson().toJson(groups));
+						        AttemptToGoToNextActivity();
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -194,8 +198,16 @@ public class Login extends Activity {
 			// TODO Auto-generated method stub
 			Log.d("Your name is: ",user.getFirstName());
 			textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
-			i.putExtra("user", new Gson().toJson(user));
+			AttemptToGoToNextActivity();
+			//i.putExtra("user", new Gson().toJson(user));
 			//Log.d("From Callback.response: ",response.getGraphObject().asMap().keySet().toString());
 		}
+    }
+    private Boolean AttemptToGoToNextActivity(){
+    	count++;
+    	Boolean next = count==2;
+    	if (next)
+    		startActivity(i);
+    	return next;
     }
 }
