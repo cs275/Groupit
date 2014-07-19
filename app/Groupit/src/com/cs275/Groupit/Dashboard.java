@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.google.gson.*;
+import com.cs275.Groupit.controllers.*;
 import com.facebook.model.GraphUser;
 
 public class Dashboard extends ActionBarActivity implements
@@ -51,20 +52,6 @@ public class Dashboard extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		
-		helper = new FacebookHelper(FacebookHelper.getSession(this));
-		groups = helper.getGroups(this, new FacebookHelper.Callback(){
-			@Override
-			public void finished(Object g) {
-				Log.d("Debug", ((GraphUser)g).toString());
-			}
-		});
-		user = helper.getUser(this, new FacebookHelper.Callback(){
-			@SuppressWarnings("unchecked")
-			@Override
-			public void finished(Object u) {
-				Log.d("Debug", ((Map<String, Object>)u).toString());
-			}
-		});
 		
 		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
@@ -74,6 +61,11 @@ public class Dashboard extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+		
+		
+		//final TextView userName = (TextView)(mNavigationDrawerFragment.getActivity().findViewById(R.id.name));
+		//userName.setText("Some Text");
+
 	}
 
 	@Override
@@ -84,6 +76,22 @@ public class Dashboard extends ActionBarActivity implements
 				.beginTransaction()
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(position + 1)).commit();
+		helper = new FacebookHelper(FacebookHelper.getSession(this));
+		groups = helper.getGroups(this, new FacebookHelper.Callback(){
+			@Override
+			public void finished(Object g) {
+				//Log.d("Debug", ((GraphUser)g).toString());
+			}
+		});
+		user = helper.getUser(this, new FacebookHelper.Callback(){
+			@SuppressWarnings("unchecked")
+			@Override
+			public void finished(Object u) {
+				Log.d("Debugger", ((Map<String, Object>)u).toString());
+				//TextView userName = (TextView)(PlaceholderFragment.root.findViewById(R.id.name));
+				//userName.setText(((Map<String, Object>)u).get("first_name").toString());
+			}
+		});
 	}
 
 	public void onSectionAttached(int number) {
@@ -136,6 +144,8 @@ public class Dashboard extends ActionBarActivity implements
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+		public static View root;
+		private static int sectionSelected=0;
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
@@ -150,18 +160,34 @@ public class Dashboard extends ActionBarActivity implements
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 			fragment.setArguments(args);
+			sectionSelected=sectionNumber;
 			return fragment;
 		}
 
-		public PlaceholderFragment() {
+		public PlaceholderFragment() { 
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_dashboard,
-					container, false);
-			return rootView;
+			
+			Controller v = null;
+			switch(sectionSelected){
+			case 1:
+				v = new MyGroups(getActivity());
+				break;
+			case 2:
+				v = new FindGroup(getActivity());
+				break;
+			case 3:
+				v= new CreateGroup(getActivity());
+				break;
+			}
+			if (v!=null)
+				root=v.inflate(inflater, container);
+			
+			
+			return root;
 		}
 
 		@Override

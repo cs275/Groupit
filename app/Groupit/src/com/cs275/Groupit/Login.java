@@ -206,8 +206,12 @@ public class Login extends Activity {
     private Boolean AttemptToGoToNextActivity(){
     	count++;
     	Boolean next = count==2;
-    	if (next)
+    	if (next){
     		startActivity(i);
+    		finish();
+    	}
+    		
+    	
     	return next;
     }
 }

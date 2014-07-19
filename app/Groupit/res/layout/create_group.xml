@@ -20,7 +20,7 @@
         android:layout_below="@+id/section_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
-        android:text=""
+        android:text="Create a new Group here."
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
