@@ -1,0 +1,11 @@
+{
+  "name": "Groupit",
+  "description": "The webservice for the Groupit application.",
+  "author": "Andrew Shidel, Phillip Ryan, Andrew Nessel",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": ">= 2.0.0",
+    "request": ">= 1.0"
+  },
+  "engine": "node 0.4.1"
+}
