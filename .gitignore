@@ -19,6 +19,8 @@ appcompat_v7/gen/
 # Gradle files
 .gradle/
 build/
+server/node_modules/
+server/models/groups.json
 
 # Local configuration file (sdk path, etc)
 local.properties

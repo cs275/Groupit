@@ -17,6 +17,7 @@ public class CreateGroup extends Controller {
 	public View inflate(LayoutInflater inflator, ViewGroup container) {
 		rootView = inflator.inflate(R.layout.create_group,
 				container, false);
-		return rootView;	}
+		return rootView;	
+	}
 
 }

@@ -273,9 +273,9 @@ public class NavigationDrawerFragment extends Fragment {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-
+		
 		if (item.getItemId() == R.id.action_example) {
-			Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT)
+			Toast.makeText(getActivity(), "Going Home...", Toast.LENGTH_SHORT)
 					.show();
 			return true;
 		}

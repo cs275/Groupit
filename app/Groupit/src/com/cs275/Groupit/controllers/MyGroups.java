@@ -21,5 +21,4 @@ public class MyGroups extends Controller{
 		v.setText("Section 1");
 		return rootView;
 	}
-
 }
