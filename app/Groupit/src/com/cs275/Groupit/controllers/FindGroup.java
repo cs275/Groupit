@@ -1,6 +1,7 @@
 package com.cs275.Groupit.controllers;
 
 import com.cs275.Groupit.R;
+import com.cs275.Groupit.helpers.ServerHelper;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -17,7 +18,12 @@ public class FindGroup extends Controller {
 	public View inflate(LayoutInflater inflator, ViewGroup container) {
 		rootView = inflator.inflate(R.layout.find_group,
 				container, false);
+		
+		ServerHelper s = new ServerHelper();
+	
 		return rootView;
+		
+		
 	}
 
 }

@@ -26,6 +26,7 @@ import org.json.JSONException;
 
 import com.google.gson.*;
 import com.cs275.Groupit.controllers.*;
+import com.cs275.Groupit.helpers.FacebookHelper;
 import com.facebook.model.GraphUser;
 
 public class Dashboard extends ActionBarActivity implements

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cs275.Groupit;
+package com.cs275.Groupit.helpers;
 
 import java.util.Map;
 
@@ -122,7 +122,7 @@ public class FacebookHelper {
 	}
 	
 	// The callback interface
-	interface Callback {
+	public interface Callback {
 	    void finished(Object g);
 	}
 	
