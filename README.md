@@ -8,19 +8,16 @@ To Run the app:
  4. Select the repository's base directory.
  5. Unckeck "Copy files into workspace"
  5. Restart eclipse.
+ 6. Start the server (see below).
  6. Right click on Groupit, click run, run as android application.
 
 
-Project Structure: 
-* **Groupit:** Contains the app itself.
-  * **res:** All user interface resources.
-    * **layout:** All layout files should be here.
-    * **drawable:** All images should be here
-  * **src/com/cs275/Groupit:** All source code should go here.
-    * **MainActivity.java:** Entry point to the application.
-* **server:** All server code should go here unless we go with cloudmine
-* **tests:** Any unit tests should go here.
-* **appcompat_v7:** Added by eclipse for actionbar support.
+To Run the server:
+ 1. Install node.js from <a href="http://nodejs.org/download/">http://nodejs.org/download/</a>
+ 2. cd into the groupit/app
+ 3. run "npm install"
+ 4. run "node app.js"
+
 
 
 
