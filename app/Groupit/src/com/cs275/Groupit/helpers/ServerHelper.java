@@ -31,7 +31,7 @@ public class ServerHelper {
 		RequestTask task=new RequestTask();
 		if (call.length>0)
 			task.addCallback(call[0]);
-		task.execute(baseUrl+"/newGroup",
+		task.execute(baseUrl+"/newGroup/",
 				"name", name,
 				"description", description,
 				"admin", admin,
@@ -40,10 +40,53 @@ public class ServerHelper {
 				"user", user);
 		return true;
 	}
+	public static void getAllGroups(Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/allGroups/");
+	}
+	public static void getAllGroupNames(Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/allGroupNames/");
+	}
+	public static void getGroupsForUser(String userName, Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/getGroupsForUser/",
+				"user", userName);
+	}
+	public static void getMembers(String groupName, Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/getMembers/",
+				"group", groupName);
+	}
+	public static void search(String query, Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/search/",
+				"q", query);
+	}
+	public static void joinGroup(String groupName, String userName, Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/joinGroup/",
+				"user", userName,
+				"group", groupName);
+	}
 	
 	public static class RequestTask extends AsyncTask<String, String, String>{
 		private Callback call=null;
+		private String finalResult = null;
 		public RequestTask addCallback(Callback _call){
+			call = _call;
 			return this;
 		}
 		@Override
@@ -59,6 +102,7 @@ public class ServerHelper {
 				HttpResponse response = client.execute(post);
 				String result = EntityUtils.toString(response.getEntity());
 				Log.d("The resault: ", result);
+				finalResult = result;
 			} catch (UnsupportedEncodingException e) { 
 				if (call!=null){
 					call.finished(e.toString());
@@ -81,7 +125,7 @@ public class ServerHelper {
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
 	        if (call!=null){
-	        	call.finished("OK");
+	        	call.finished(finalResult);
 	        }
 	        //Do anything with response..
 	    }
