@@ -30,6 +30,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.HttpMethod;
@@ -42,7 +44,6 @@ import com.facebook.Settings;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.model.GraphMultiResult;
-
 import com.google.gson.*;
 
 
@@ -52,7 +53,7 @@ public class Login extends Activity {
     private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 
     private TextView textInstructionsOrLink;
-    private Button buttonLoginLogout;
+    private ImageView buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
     private Request.GraphUserCallback userCallback = new UserRequestCallback();
     Intent i;
@@ -65,7 +66,7 @@ public class Login extends Activity {
         
         i=new Intent(this, Dashboard.class);
         
-        buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
+        buttonLoginLogout = (ImageView)findViewById(R.id.buttonLoginLogout);
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
@@ -120,7 +121,7 @@ public class Login extends Activity {
         Session session = Session.getActiveSession();
         if (session.isOpened()) {
             
-            buttonLoginLogout.setText("Logout");
+            //buttonLoginLogout.setText("Logout");
             Request.newMeRequest(session, userCallback).executeAsync();
             Log.d("Exipre Date: ", session.getExpirationDate().toString());
            
@@ -149,7 +150,7 @@ public class Login extends Activity {
 								e.printStackTrace();
 							
 	            	        }
-							textInstructionsOrLink.setText(textInstructionsOrLink.getText()+s);
+							//textInstructionsOrLink.setText(textInstructionsOrLink.getText()+s);
 							
             	        }
             	    }
@@ -159,8 +160,8 @@ public class Login extends Activity {
                 public void onClick(View view) { onClickLogout(); }
             });
         } else {
-            textInstructionsOrLink.setText("Click to login");
-            buttonLoginLogout.setText("Login");
+            //textInstructionsOrLink.setText("Click to login");
+            //buttonLoginLogout.setText("Login");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
             });
@@ -168,12 +169,18 @@ public class Login extends Activity {
     }
 
     private void onClickLogin() {
+    	Log.d("Clicked","Clicked");
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+        	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
+            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
+            new FacebookHelper(session);
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }
+    } 
+    public void onClick(View v){
+    	onClickLogin();
     }
 
     private void onClickLogout() {
@@ -197,7 +204,7 @@ public class Login extends Activity {
 		public void onCompleted(GraphUser user, Response response) {
 			// TODO Auto-generated method stub
 			Log.d("Your name is: ",user.getFirstName());
-			textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
+			//textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
 			AttemptToGoToNextActivity();
 			//i.putExtra("user", new Gson().toJson(user));
 			//Log.d("From Callback.response: ",response.getGraphObject().asMap().keySet().toString());
