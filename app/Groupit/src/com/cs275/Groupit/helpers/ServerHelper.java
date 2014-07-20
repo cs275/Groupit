@@ -1,26 +1,17 @@
 package com.cs275.Groupit.helpers;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -69,13 +60,19 @@ public class ServerHelper {
 				String result = EntityUtils.toString(response.getEntity());
 				Log.d("The resault: ", result);
 			} catch (UnsupportedEncodingException e) { 
-				// TODO Auto-generated catch block
+				if (call!=null){
+					call.finished(e.toString());
+			    }
 				e.printStackTrace();
 			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
+				if (call!=null){
+					call.finished(e.toString());
+			    }
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				if (call!=null){
+					call.finished(e.toString());
+			    }
 				e.printStackTrace();
 			}
 			return "";
