@@ -18,10 +18,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 public class ServerHelper {
 	private static final String baseUrl = "http://10.0.2.2:3000";
+	private static String[] cache = new String[5];
 
 	public ServerHelper() {
 		
@@ -41,19 +43,31 @@ public class ServerHelper {
 		return true;
 	}
 	public static void getAllGroups(Callback...call){
+		int fNum = 0;
+		if (cache[fNum]!=null)
+			call[fNum].finished(null, cache[fNum]);
 		RequestTask task=new RequestTask();
+		task.addCache(fNum);
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/allGroups/");
 	}
 	public static void getAllGroupNames(Callback...call){
+		int fNum = 1;
+		if (cache[fNum]!=null)
+			call[0].finished(null, cache[fNum]);
 		RequestTask task=new RequestTask();
+		task.addCache(fNum); 
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/allGroupNames/");
 	}
 	public static void getGroupsForUser(String userName, Callback...call){
+		int fNum = 2;
+		if (cache[fNum]!=null)
+			call[fNum].finished(null, cache[fNum]);
 		RequestTask task=new RequestTask();
+		task.addCache(fNum);
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/getGroupsForUser/",
@@ -85,9 +99,13 @@ public class ServerHelper {
 	public static class RequestTask extends AsyncTask<String, String, String>{
 		private Callback call=null;
 		private String finalResult = null;
+		private int cacheNum=-1;
 		public RequestTask addCallback(Callback _call){
-			call = _call;
+			call = _call;	
 			return this;
+		}
+		public void addCache(int _cacheNum){
+			cacheNum=_cacheNum;
 		}
 		@Override
 		protected String doInBackground(String... uri) {
@@ -103,9 +121,11 @@ public class ServerHelper {
 				String result = EntityUtils.toString(response.getEntity());
 				Log.d("The resault: ", result);
 				finalResult = result;
+				
 			} catch (UnsupportedEncodingException e) { 
 				if (call!=null){
 					call.finished(e, null);
+					
 			    }
 				e.printStackTrace();
 			} catch (ClientProtocolException e) {
@@ -124,8 +144,15 @@ public class ServerHelper {
 	    @Override
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
+	        if (cacheNum!=-1)
+	        	cache[cacheNum]=finalResult;
 	        if (call!=null){
-	        	call.finished(null, finalResult);
+		        new Handler().post(new Runnable() {
+				    @Override
+				    public void run() {
+				        call.finished(null, finalResult);
+				    }
+				});
 	        }
 	        //Do anything with response..
 	    }
