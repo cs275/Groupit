@@ -51,7 +51,11 @@ public class FacebookHelper {
 	 * Note if this is the first time getting the users groups, then it will return null.
 	 */
 	public JSONArray getGroups(Context c, Callback...call){
-		if (groups!=null) return groups;
+		if (groups!=null) { 
+			if (call!=null)
+				call[0].finished(groups);
+			return groups;
+		}
 		
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
 		String groupsString = sp.getString("groups", null);
@@ -62,6 +66,8 @@ public class FacebookHelper {
 		}
 		
 		groups = new Gson().fromJson(groupsString, JSONArray.class);
+		if (call!=null)
+			call[0].finished(groups);
 		return groups;
 	}
 	@SuppressWarnings("unchecked")
@@ -92,7 +98,7 @@ public class FacebookHelper {
          	    new Request.Callback() {
          	        public void onCompleted(Response response) {
          	            /* handle the result */
-         	        	if (response.getError()!=null){
+         	        	if (response.getError()==null){
 							try {
 								groups = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
 								SharedPreferences prefs = c.getSharedPreferences(

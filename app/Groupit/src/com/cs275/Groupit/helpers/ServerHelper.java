@@ -24,7 +24,7 @@ public class ServerHelper {
 	private static final String baseUrl = "http://10.0.2.2:3000";
 
 	public ServerHelper() {
-		new RequestTask().execute(baseUrl+"/newGroup");
+		
 	}
 	
 	public static Boolean newGroup(String name, String description, String admin, String location, String category, String user, Callback...call){
@@ -105,17 +105,17 @@ public class ServerHelper {
 				finalResult = result;
 			} catch (UnsupportedEncodingException e) { 
 				if (call!=null){
-					call.finished(e.toString());
+					call.finished(e, null);
 			    }
 				e.printStackTrace();
 			} catch (ClientProtocolException e) {
 				if (call!=null){
-					call.finished(e.toString());
+					call.finished(e, null);
 			    }
 				e.printStackTrace();
 			} catch (IOException e) {
 				if (call!=null){
-					call.finished(e.toString());
+					call.finished(e, null);
 			    }
 				e.printStackTrace();
 			}
@@ -125,7 +125,7 @@ public class ServerHelper {
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
 	        if (call!=null){
-	        	call.finished(finalResult);
+	        	call.finished(null, finalResult);
 	        }
 	        //Do anything with response..
 	    }
@@ -156,7 +156,7 @@ public class ServerHelper {
 	
 	// The callback interface
 	public interface Callback {
-		void finished(String resault);
+		void finished(Exception e, String resault);
 	}
 
 

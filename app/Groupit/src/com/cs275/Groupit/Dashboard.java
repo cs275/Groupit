@@ -77,7 +77,7 @@ public class Dashboard extends ActionBarActivity implements
 				.beginTransaction()
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(position + 1)).commit();
-		helper = new FacebookHelper(FacebookHelper.getSession(this));
+		/*helper = new FacebookHelper(FacebookHelper.getSession(this));
 		groups = helper.getGroups(this, new FacebookHelper.Callback(){
 			@Override
 			public void finished(Object g) {
@@ -92,7 +92,7 @@ public class Dashboard extends ActionBarActivity implements
 				//TextView userName = (TextView)(PlaceholderFragment.root.findViewById(R.id.name));
 				//userName.setText(((Map<String, Object>)u).get("first_name").toString());
 			}
-		});
+		});*/
 	}
 
 	public void onSectionAttached(int number) {

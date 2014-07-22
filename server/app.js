@@ -18,11 +18,11 @@ var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use( bodyParser.urlencoded() ); // to support URL-encoded bodies
  
-app.get('/allGroups/', function(req, res) {
+app.post('/allGroups/', function(req, res) {
 	res.send(groups);
 });
 
-app.get('/allGroupNames/', function(req, res){
+app.post('/allGroupNames/', function(req, res){
 	var allNames = [];
 	for (var i=0; i<groups.length; i++){
 		allNames.push(groups[i].name);
@@ -33,7 +33,7 @@ app.get('/allGroupNames/', function(req, res){
 		res.send(allNames);
 });
 
-app.get('/getGroupsForUser/', function(req, res){
+app.post('/getGroupsForUser/', function(req, res){
 	var user = req.query.user,
 		memberOf = [];
 	for (var i=0; i<groups.length; i++){
@@ -47,12 +47,12 @@ app.get('/getGroupsForUser/', function(req, res){
 		res.send(memberOf);
 });
 
-app.get('/getMembers/', function(req, res){
+app.post('/getMembers/', function(req, res){
 	var group = req.query.group;
 	res.send(getGroup(group)["members"]);
 });
 
-app.get("/search/", function(req, res){
+app.post("/search/", function(req, res){
 	var query = req.query.q;
 	var matches = [];
 	for (var i=0; i<groups.length; i++){
@@ -64,7 +64,7 @@ app.get("/search/", function(req, res){
 		res.send(matches);
 });	
 
-app.get('/joinGroup/', function(req, res){
+app.post('/joinGroup/', function(req, res){
 	var user = req.query.user,
 		group = req.query.group;
 	for (var i=0; i<groups.length; i++){
