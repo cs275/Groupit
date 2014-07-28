@@ -53,7 +53,7 @@ app.post('/getMembers/', function(req, res){
 });
 
 app.post("/search/", function(req, res){
-	var query = req.query.q;
+	var query = req.param('query', null);
 	var matches = [];
 	for (var i=0; i<groups.length; i++){
 		if (groups[i].name.indexOf(query)!=-1) matches.push(groups[i].name);

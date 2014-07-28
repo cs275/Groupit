@@ -85,7 +85,7 @@ public class ServerHelper {
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/search/",
-				"q", query);
+				"query", query);
 	}
 	public static void joinGroup(String groupName, String userName, Callback...call){
 		RequestTask task=new RequestTask();

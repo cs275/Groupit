@@ -12,5 +12,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">go home</string>
-
+	
+    <string name="category_prompt">Choose a Category</string>
+ 
+    <string-array name="category_array">
+        <item>Select a Category</item>
+        <item>Sports</item>
+        <item>Clubs</item>
+        <item>Acedemic</item>
+        <item>Fraternity</item>
+        <item>Sorority</item>
+        <item>School</item>
+        <item>Church</item>
+        <item>Friends</item>
+        <item>Family</item>
+        <item>Other</item>
+    </string-array>
+    
 </resources>
