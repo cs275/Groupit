@@ -28,13 +28,13 @@ public class MyGroups extends Controller{
 		rootView = inflator.inflate(R.layout.fragment_dashboard,
 				container, false);
 		
-		final TextView v = (TextView)(rootView.findViewById(R.id.name));
+		final TextView v = (TextView)(rootView.findViewById(R.id.name)); 
 		//Log.d("Username: ", new FacebookHelper(FacebookHelper.getSession(activity)).getUserName(activity));
 		ServerHelper.getGroupsForUser(FacebookHelper.getUserName(activity), new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
 				
-				if (e!=null || g.equals("null")){
+				if (g==null || e!=null || g.equals("null")){
 					v.setText("You currently have no groups");
 					return;
 				}

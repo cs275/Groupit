@@ -41,6 +41,9 @@ public class FindGroup extends Controller {
 		ServerHelper.getAllGroupNames(new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
+				if (g==null || g.equals("null")){
+					return;
+				}
 				JsonParser jp = new JsonParser();
 		        JsonArray items = jp.parse(g).getAsJsonArray();
 		        initListView(items);

@@ -30,7 +30,7 @@ public class FacebookHelper {
 	private static JSONArray groups;
 	private static Session session;
 	private static Map<String, Object> user;
-	private final CountDownLatch loginLatch = new CountDownLatch (1);
+	//private final CountDownLatch loginLatch = new CountDownLatch (1);
 	
 	/**
 	 * 
@@ -142,7 +142,7 @@ public class FacebookHelper {
 			@Override
 			public void onCompleted(GraphUser _user, Response response) {
 				user=_user.asMap();
-				loginLatch.countDown ();
+				//loginLatch.countDown ();
 				SharedPreferences prefs = c.getSharedPreferences(
 					      "com.cs275.Groupit", Context.MODE_PRIVATE);
 				prefs.edit().putString("user", new Gson().toJson(user));

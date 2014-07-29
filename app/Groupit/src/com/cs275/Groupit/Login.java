@@ -89,7 +89,7 @@ public class Login extends Activity {
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
                 
-                //new FacebookHelper(session);
+                new FacebookHelper(session);
             }
         }
 
@@ -215,7 +215,7 @@ public class Login extends Activity {
 			prefs.edit().putString("username", user.getName()).apply();
 			
 			//textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
-			AttemptToGoToNextActivity();
+			AttemptToGoToNextActivity(); 
 			//i.putExtra("user", new Gson().toJson(user));
 			//Log.d("From Callback.response: ",response.getGraphObject().asMap().keySet().toString());
 		}
