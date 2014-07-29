@@ -1,6 +1,7 @@
 package com.cs275.Groupit.controllers;
 
 import com.cs275.Groupit.R;
+import com.cs275.Groupit.helpers.FacebookHelper;
 import com.cs275.Groupit.helpers.ServerHelper;
 
 import android.app.Activity;
@@ -46,14 +47,12 @@ public class CreateGroup extends Controller {
 		
 		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
 		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
-		
-		ServerHelper.newGroup(name.getText().toString(), description.getText().toString(), "", "", selectedCategory, "", new ServerHelper.Callback() {
+		final String username = FacebookHelper.getUserName(activity);
+		ServerHelper.newGroup(name.getText().toString(), description.getText().toString(), username, "", selectedCategory, username, new ServerHelper.Callback() {
 			
 			@Override
 			public void finished(Exception e, String resault) {
-				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-				String userString = sp.getString("user", null);
-				ServerHelper.joinGroup(name.getText().toString(), userString);
+				//ServerHelper.joinGroup(name.getText().toString(), username);
 				Toast.makeText(activity, "Create Groupit!", Toast.LENGTH_SHORT).show();
 			}
 		});

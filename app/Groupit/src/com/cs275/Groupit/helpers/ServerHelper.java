@@ -64,8 +64,9 @@ public class ServerHelper {
 	}
 	public static void getGroupsForUser(String userName, Callback...call){
 		int fNum = 2;
-		if (cache[fNum]!=null)
-			call[fNum].finished(null, cache[fNum]);
+		if (cache[fNum]!=null){
+			call[0].finished(null, cache[fNum]);
+		}
 		RequestTask task=new RequestTask();
 		task.addCache(fNum);
 		if (call.length>0)

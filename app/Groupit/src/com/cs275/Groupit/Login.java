@@ -24,7 +24,9 @@ import org.json.JSONException;
 
 import android.R.array;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,7 +88,8 @@ public class Login extends Activity {
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
-                new FacebookHelper(session);
+                
+                //new FacebookHelper(session);
             }
         }
 
@@ -194,9 +197,11 @@ public class Login extends Activity {
     private class SessionStatusCallback implements Session.StatusCallback {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
+        	if (exception!=null)
+        		exception.printStackTrace();
         	Log.d("Permissions: ",session.getPermissions().toString());
         	Log.d("Permissions: ",session.getAccessToken());
-        	
+        	//Log.d("Username", new FacebookHelper(session).getUserName(getBaseContext()));
             updateView();
         }
     }
@@ -205,6 +210,10 @@ public class Login extends Activity {
 		public void onCompleted(GraphUser user, Response response) {
 			// TODO Auto-generated method stub
 			Log.d("Your name is: ",user.getFirstName());
+			SharedPreferences prefs = getBaseContext().getSharedPreferences(
+				      "com.cs275.Groupit", Context.MODE_PRIVATE);
+			prefs.edit().putString("username", user.getName()).apply();
+			
 			//textInstructionsOrLink.setText("Hello "+user.getFirstName()+textInstructionsOrLink.getText());
 			AttemptToGoToNextActivity();
 			//i.putExtra("user", new Gson().toJson(user));

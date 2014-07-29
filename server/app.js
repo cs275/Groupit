@@ -34,11 +34,11 @@ app.post('/allGroupNames/', function(req, res){
 });
 
 app.post('/getGroupsForUser/', function(req, res){
-	var user = req.query.user,
+	var user = req.param('user', null),
 		memberOf = [];
 	for (var i=0; i<groups.length; i++){
 		if (groups[i].members.indexOf(user) != -1){
-			memberOf.push(groups[i]);
+			memberOf.push(groups[i].name);
 		}
 	}
 	if (memberOf.length==0)
@@ -48,7 +48,7 @@ app.post('/getGroupsForUser/', function(req, res){
 });
 
 app.post('/getMembers/', function(req, res){
-	var group = req.query.group;
+	var group = req.param('group', null);
 	res.send(getGroup(group)["members"]);
 });
 
@@ -65,8 +65,8 @@ app.post("/search/", function(req, res){
 });	
 
 app.post('/joinGroup/', function(req, res){
-	var user = req.query.user,
-		group = req.query.group;
+	var user = req.param('user', null),
+		group = req.param('group', null);
 	for (var i=0; i<groups.length; i++){
 		if (groups[i].name == group){
 			groups[i].members.push(user);

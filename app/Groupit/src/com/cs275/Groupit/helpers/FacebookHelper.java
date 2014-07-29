@@ -4,6 +4,7 @@
 package com.cs275.Groupit.helpers;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +12,7 @@ import org.json.JSONException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -28,6 +30,7 @@ public class FacebookHelper {
 	private static JSONArray groups;
 	private static Session session;
 	private static Map<String, Object> user;
+	private final CountDownLatch loginLatch = new CountDownLatch (1);
 	
 	/**
 	 * 
@@ -81,7 +84,24 @@ public class FacebookHelper {
 			return user;
 		}
 		user = new Gson().fromJson(userString, Map.class);
-		return null;
+		return user;
+	}
+	
+	public static String getUserName(final Context c){
+		SharedPreferences prefs = c.getSharedPreferences(
+			      "com.cs275.Groupit", Context.MODE_PRIVATE);
+		String username = prefs.getString("username", null);
+		return username;
+		/*
+		if (result==null){
+			try {
+				loginLatch.await ();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return user.get("name").toString(); */
 	}
 	
 	/**
@@ -115,10 +135,14 @@ public class FacebookHelper {
 	}
 	
 	public void fetchUser(final Context c, final Callback... call){
+		if(!session.isOpened())
+			Log.d("Error", "Not opened!");
+	
 		Request.newMeRequest(session, new Request.GraphUserCallback() {
 			@Override
 			public void onCompleted(GraphUser _user, Response response) {
 				user=_user.asMap();
+				loginLatch.countDown ();
 				SharedPreferences prefs = c.getSharedPreferences(
 					      "com.cs275.Groupit", Context.MODE_PRIVATE);
 				prefs.edit().putString("user", new Gson().toJson(user));
