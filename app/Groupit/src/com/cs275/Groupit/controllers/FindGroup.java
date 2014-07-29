@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cs275.Groupit.R;
+import com.cs275.Groupit.helpers.FacebookHelper;
 import com.cs275.Groupit.helpers.ServerHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class FindGroup extends Controller {
 	Activity activity;
@@ -85,14 +88,15 @@ public class FindGroup extends Controller {
 			@SuppressLint("NewApi") @Override
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
-				final String item = (String) parent.getItemAtPosition(position);
-				view.animate().setDuration(2000).alpha(0)
-				.withEndAction(new Runnable() {
+				final String item = (String) ((TextView)view).getText();
+				final String username = FacebookHelper.getUserName(activity);
+				ServerHelper.joinGroup(item, username, new ServerHelper.Callback() {
+					
 					@Override
-					public void run() {
-						list.remove(item);
-						adapter.notifyDataSetChanged();
-						view.setAlpha(1);
+					public void finished(Exception e, String result) {
+						if (result.equals("1")){
+							Toast.makeText(activity, "Joined "+item, Toast.LENGTH_SHORT).show();
+						}
 					}
 				});
 			}

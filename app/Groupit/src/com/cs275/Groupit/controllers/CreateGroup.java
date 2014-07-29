@@ -53,7 +53,7 @@ public class CreateGroup extends Controller {
 			@Override
 			public void finished(Exception e, String resault) {
 				//ServerHelper.joinGroup(name.getText().toString(), username);
-				Toast.makeText(activity, "Create Groupit!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, "Created Groupit!", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
