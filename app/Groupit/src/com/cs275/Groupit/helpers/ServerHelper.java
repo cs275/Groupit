@@ -22,8 +22,8 @@ import android.os.Handler;
 import android.util.Log;
 
 public class ServerHelper {
-	private static final String baseUrl = "http://10.0.2.2:3000";
-	//private static final String baseUrl = "http://162.243.124.12:8000";
+	//private static final String baseUrl = "http://10.0.2.2:3000";
+	private static final String baseUrl = "http://162.243.124.12:8000";
 	private static String[] cache = new String[5];
 
 	public ServerHelper() { 

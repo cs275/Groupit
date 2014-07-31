@@ -5,8 +5,10 @@ var express = require('express'),
 var groups, users;
 try{
 	groups = JSON.parse(fs.readFileSync("./models/groups.json"));
+	messages = JSON.parse(fs.readFileSync("./models/messages.json"))
 }catch(e){
 	groups = [];
+	messages = {};
 }
 
 app.listen(3000);
@@ -99,6 +101,31 @@ app.post('/newGroup/', function(req, res) {
     console.log("Name: ", name);
     res.send("Hello " + name);
 });
+
+app.get('/newMessage/', function(req, res){
+	var group = req.query.group,
+		user = req.query.user,
+		message = req.query.message;
+	if (messages[group]){
+		messages[group].data.push({"user":user,"message":message});
+		res.send("Success")
+	}else{
+		messages.push({"data":[{"user":user,"message":message}]});
+		res.send("Created new thread");
+	}
+	fs.writeFile("./models/messages.json", JSON.stringify(groups))
+});
+
+app.get('/getMessages/', function(req, res){
+	var group = req.query.group,
+		start = req.query.start||0;
+		end = req.query.end||100;
+	if (messages[group])
+		res.send( messages[group].slice(start,end));
+	else
+		res.send([]);
+});
+
 
 function getGroup(group){
 	for (var i=0; i<groups.length; i++){
