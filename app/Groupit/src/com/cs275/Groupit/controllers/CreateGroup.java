@@ -1,19 +1,35 @@
 package com.cs275.Groupit.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cs275.Groupit.R;
 import com.cs275.Groupit.helpers.FacebookHelper;
 import com.cs275.Groupit.helpers.ServerHelper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,7 +50,61 @@ public class CreateGroup extends Controller {
 				create();
 			}
 		});
+		Button importGroup = (Button) rootView.findViewById(R.id.importButton);
+		importGroup.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View arg0) {
+				RelativeLayout panel = (RelativeLayout) rootView.findViewById(R.id.FBGroupsPanel);
+				panel.setVisibility(View.VISIBLE);
+				FacebookHelper fb = new FacebookHelper();
+				fb.getGroups(activity, new FacebookHelper.Callback() {
+					@Override
+					public void finished(Object g) {
+						final JSONArray groups = (JSONArray)g;
+						try{
+							Log.d("Array", groups.getJSONObject(1).getString("name"));
+							ArrayList<String> list = new ArrayList<String>();
+							for (int i = 0; i < groups.length(); ++i) {
+								list.add(groups.getJSONObject(i).getString("name"));
+							}
+							final StableArrayAdapter adapter = new StableArrayAdapter(activity,
+									android.R.layout.simple_list_item_1, list);
+							ListView listview = (ListView) rootView.findViewById(R.id.FBGroupsList);
+							listview.setAdapter(adapter);
+							
+							listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+								@SuppressLint("NewApi") @Override
+								public void onItemClick(AdapterView<?> parent, final View view,
+										int position, long id) {
+									try {
+										fillFields(groups.getJSONObject(position));
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							});
+						}catch(JSONException e){
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		return rootView;
+	}
+	
+	private void fillFields(JSONObject group) throws JSONException{
+		Spinner category = (Spinner) rootView.findViewById(R.id.category);
+		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
+		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
+	
+		name.setText(group.getString("name"));
+		
+		RelativeLayout panel = (RelativeLayout) rootView.findViewById(R.id.FBGroupsPanel);
+		panel.setVisibility(View.GONE);
+		
+		//https://developers.facebook.com/docs/graph-api/reference/v2.0/group
 	}
 	
 	public void create(){
@@ -57,5 +127,30 @@ public class CreateGroup extends Controller {
 			}
 		});
 	}
+	
+	private class StableArrayAdapter extends ArrayAdapter<String> {
+
+	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+	    public StableArrayAdapter(Context context, int textViewResourceId,
+	        List<String> objects) {
+	      super(context, textViewResourceId, objects);
+	      for (int i = 0; i < objects.size(); ++i) {
+	        mIdMap.put(objects.get(i), i);
+	      }
+	    }
+
+	    @Override
+	    public long getItemId(int position) {
+	      String item = getItem(position);
+	      return mIdMap.get(item);
+	    }
+
+	    @Override
+	    public boolean hasStableIds() {
+	      return true;
+	    }
+
+	  }
 
 }

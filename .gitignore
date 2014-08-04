@@ -21,6 +21,8 @@ appcompat_v7/gen/
 build/
 server/node_modules/
 server/models/groups.json
+app/TicTacToe
+app/Dropbox
 
 # Local configuration file (sdk path, etc)
 local.properties

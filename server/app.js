@@ -5,9 +5,13 @@ var express = require('express'),
 var groups, users;
 try{
 	groups = JSON.parse(fs.readFileSync("./models/groups.json"));
-	messages = JSON.parse(fs.readFileSync("./models/messages.json"))
 }catch(e){
 	groups = [];
+}
+
+try{
+	messages = JSON.parse(fs.readFileSync("./models/messages.json"))
+}catch(e){
 	messages = {};
 }
 

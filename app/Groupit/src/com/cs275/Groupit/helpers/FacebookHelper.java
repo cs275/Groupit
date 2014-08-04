@@ -32,6 +32,10 @@ public class FacebookHelper {
 	private static Map<String, Object> user;
 	//private final CountDownLatch loginLatch = new CountDownLatch (1);
 	
+	public FacebookHelper(){
+		session = getSession(null);
+	}
+	
 	/**
 	 * 
 	 */
@@ -123,7 +127,7 @@ public class FacebookHelper {
 								groups = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
 								SharedPreferences prefs = c.getSharedPreferences(
 									      "com.cs275.Groupit", Context.MODE_PRIVATE);
-								prefs.edit().putString("groups", new Gson().toJson(groups));
+								prefs.edit().putString("groups", new Gson().toJson(groups)).commit();
 								if (call.length>0)call[0].finished(groups);
 							} catch (JSONException e) {
 								e.printStackTrace();

@@ -10,6 +10,7 @@
     
     <TableLayout
             android:id="@+id/mainTable"
+            android:layout_marginTop="70dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
@@ -80,5 +81,31 @@
         android:onClick="create"
         android:layout_marginTop="25dp"
         android:text="Create!" />
+
+    <Button
+        android:id="@+id/importButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:text="Import a Group" />
+    
+    <RelativeLayout
+        android:id="@+id/FBGroupsPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#DDD"
+        android:layout_margin="50dp">
+       
+        <ListView 
+            android:id="@+id/FBGroupsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            
+        </ListView>
+        
+    </RelativeLayout>
 
 </RelativeLayout>
