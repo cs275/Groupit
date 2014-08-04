@@ -56,8 +56,8 @@ public class CreateGroup extends Controller {
 			public void onClick(View arg0) {
 				RelativeLayout panel = (RelativeLayout) rootView.findViewById(R.id.FBGroupsPanel);
 				panel.setVisibility(View.VISIBLE);
-				FacebookHelper fb = new FacebookHelper();
-				fb.getGroups(activity, new FacebookHelper.Callback() {
+				FacebookHelper fb = new FacebookHelper(activity);
+				fb.getGroups(new FacebookHelper.Callback() {
 					@Override
 					public void finished(Object g) {
 						final JSONArray groups = (JSONArray)g;
@@ -97,12 +97,27 @@ public class CreateGroup extends Controller {
 	private void fillFields(JSONObject group) throws JSONException{
 		Spinner category = (Spinner) rootView.findViewById(R.id.category);
 		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
-		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
+		final EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
 	
 		name.setText(group.getString("name"));
 		
 		RelativeLayout panel = (RelativeLayout) rootView.findViewById(R.id.FBGroupsPanel);
 		panel.setVisibility(View.GONE);
+		
+		FacebookHelper fb = new FacebookHelper(activity);
+		fb.getGroupDetails(group.getString("id"), new FacebookHelper.Callback() {			
+			@Override
+			public void finished(Object g) {
+				Log.d("Finished", g.toString());
+				JSONObject group = (JSONObject)g;
+				try {
+					description.setText(group.getString("description"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		//https://developers.facebook.com/docs/graph-api/reference/v2.0/group
 	}
@@ -117,7 +132,7 @@ public class CreateGroup extends Controller {
 		
 		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
 		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
-		final String username = FacebookHelper.getUserName(activity);
+		final String username = FacebookHelper.getUserName();
 		ServerHelper.newGroup(name.getText().toString(), description.getText().toString(), username, "", selectedCategory, username, new ServerHelper.Callback() {
 			
 			@Override
