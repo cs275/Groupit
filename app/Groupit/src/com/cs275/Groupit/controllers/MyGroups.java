@@ -30,7 +30,7 @@ public class MyGroups extends Controller{
 		
 		final TextView v = (TextView)(rootView.findViewById(R.id.name)); 
 		//Log.d("Username: ", new FacebookHelper(FacebookHelper.getSession(activity)).getUserName(activity));
-		ServerHelper.getGroupsForUser(FacebookHelper.getUserName(activity), new ServerHelper.Callback(){
+		ServerHelper.getGroupsForUser(FacebookHelper.getUserName(), new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
 				

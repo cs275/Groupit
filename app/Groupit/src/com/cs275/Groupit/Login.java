@@ -89,7 +89,7 @@ public class Login extends Activity {
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
                 
-                new FacebookHelper(session);
+                new FacebookHelper(session, this);
             }
         }
 
@@ -178,7 +178,7 @@ public class Login extends Activity {
         if (!session.isOpened() && !session.isClosed()) {
         	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
             session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
-            new FacebookHelper(session);
+            new FacebookHelper(session, this);
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }

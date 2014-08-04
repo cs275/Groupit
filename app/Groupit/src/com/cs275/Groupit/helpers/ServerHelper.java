@@ -39,7 +39,7 @@ public class ServerHelper {
 				"description", description,
 				"admin", admin,
 				"location", location,
-				"category", category,
+				"category", category, 
 				"user", user);
 		return true;
 	}

@@ -92,7 +92,7 @@ public class FindGroup extends Controller {
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
 				final String item = (String) ((TextView)view).getText();
-				final String username = FacebookHelper.getUserName(activity);
+				final String username = FacebookHelper.getUserName();
 				ServerHelper.joinGroup(item, username, new ServerHelper.Callback() {
 					
 					@Override
