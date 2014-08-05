@@ -12,6 +12,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -39,7 +40,7 @@ public final class Cache{
 	}
 	public void restore(){
 		try {
-			cache = (HashMap<String, Serializable>)new InternalStorage().readObject(context, key);
+			cache = (HashMap<String, Serializable>)new InternalStorage().readObject(key);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,11 +55,11 @@ public final class Cache{
 
 		private InternalStorage() {}
 
-		public void writeObject(Context context, String key, HashMap<String, Serializable> object) throws IOException {
+		public void writeObject(String key, HashMap<String, Serializable> object) throws IOException {
 			new WriteTask(context, key, object).execute();
 		}
 
-		public Object readObject(Context context, String key) throws IOException,
+		public Object readObject(String key) throws IOException,
 		ClassNotFoundException {
 			FileInputStream fis = context.openFileInput(key);
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -71,8 +72,8 @@ public final class Cache{
 		Context context;
 		String key;
 		HashMap<String, Serializable> value;
-		public WriteTask(Context _context, String _key, HashMap<String, Serializable> _value){
-			context=_context;
+		public WriteTask(Context c, String _key, HashMap<String, Serializable> _value){
+			context=c;
 			key=_key;
 			value=_value;
 		}

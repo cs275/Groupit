@@ -89,7 +89,7 @@ public class Login extends Activity {
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
                 
-                new FacebookHelper(session, this);
+                //new FacebookHelper(session, this);
             }
         }
 

@@ -38,7 +38,7 @@ public class FindGroup extends Controller {
 		rootView = inflator.inflate(R.layout.find_group,
 				container, false);
 		
-		ServerHelper.getAllGroupNames(new ServerHelper.Callback(){
+		new ServerHelper(activity).getAllGroupNames(new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
 				if (g==null || g.equals("null")){
@@ -92,7 +92,7 @@ public class FindGroup extends Controller {
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
 				final String item = (String) ((TextView)view).getText();
-				final String username = FacebookHelper.getUserName();
+				final String username = FacebookHelper.getUserName(activity);
 				ServerHelper.joinGroup(item, username, new ServerHelper.Callback() {
 					
 					@Override

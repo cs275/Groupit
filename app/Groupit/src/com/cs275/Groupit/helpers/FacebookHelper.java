@@ -50,7 +50,7 @@ public class FacebookHelper {
 	
 	/**
 	 * 
-	 */
+	 */ 
 	public FacebookHelper(Session _session, Context _context) {
 		context = _context;
 		cache = new Cache(context, "FacebookCache");
@@ -112,8 +112,8 @@ public class FacebookHelper {
 		return user;
 	}
 	
-	public static String getUserName(){
-		SharedPreferences prefs = context.getSharedPreferences(
+	public static String getUserName(Context c){
+		SharedPreferences prefs = c.getSharedPreferences(
 			      "com.cs275.Groupit", Context.MODE_PRIVATE);
 		String username = prefs.getString("username", null);
 		return username;

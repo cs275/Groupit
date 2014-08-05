@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -24,10 +25,12 @@ import android.util.Log;
 public class ServerHelper {
 	private static final String baseUrl = "http://10.0.2.2:3000";
 	//private static final String baseUrl = "http://162.243.124.12:8000";
-	private static String[] cache = new String[5];
-
-	public ServerHelper() { 
-		
+	
+	//private static String[] cache = new String[5];
+	public static Cache cache;
+	
+	public ServerHelper(Context c) { 
+		cache = new Cache(c, "ServerCache");
 	}
 	
 	public static Boolean newGroup(String name, String description, String admin, String location, String category, String user, Callback...call){
@@ -43,33 +46,34 @@ public class ServerHelper {
 				"user", user);
 		return true;
 	}
-	public static void getAllGroups(Callback...call){
-		int fNum = 0;
-		if (cache[fNum]!=null)
-			call[fNum].finished(null, cache[fNum]);
+	public void getAllGroups(Callback...call){
+		String cacheKey = "allGroups";
+		
+		if (cache.get(cacheKey)!=null)
+			call[0].finished(null, (String)cache.get(cacheKey));
 		RequestTask task=new RequestTask();
-		task.addCache(fNum);
+		task.addCache(cacheKey);
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/allGroups/");
 	}
-	public static void getAllGroupNames(Callback...call){
-		int fNum = 1;
-		if (cache[fNum]!=null)
-			call[0].finished(null, cache[fNum]);
+	public void getAllGroupNames(Callback...call){
+		String cacheKey = "allGroupNames";
+		if (cache.get(cacheKey)!=null)
+			call[0].finished(null, (String)cache.get(cacheKey));
 		RequestTask task=new RequestTask();
-		task.addCache(fNum); 
+		task.addCache(cacheKey); 
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/allGroupNames/");
 	}
-	public static void getGroupsForUser(String userName, Callback...call){
-		int fNum = 2;
-		if (cache[fNum]!=null){
-			call[0].finished(null, cache[fNum]);
-		}
+	public void getGroupsForUser(String userName, Callback...call){
+		String cacheKey = "groupsForUser";
+		if (cache.get(cacheKey)!=null)
+			call[0].finished(null, (String)cache.get(cacheKey));
+		
 		RequestTask task=new RequestTask();
-		task.addCache(fNum);
+		task.addCache(cacheKey);
 		if (call.length>0)
 			task.addCallback(call[0]);
 		task.execute(baseUrl+"/getGroupsForUser/",
@@ -101,13 +105,13 @@ public class ServerHelper {
 	public static class RequestTask extends AsyncTask<String, String, String>{
 		private Callback call=null;
 		private String finalResult = null;
-		private int cacheNum=-1;
+		private String cacheKey=null;
 		public RequestTask addCallback(Callback _call){
 			call = _call;	
 			return this;
 		}
-		public void addCache(int _cacheNum){
-			cacheNum=_cacheNum;
+		public void addCache(String _cacheKey){
+			cacheKey=_cacheKey;
 		}
 		@Override
 		protected String doInBackground(String... uri) {
@@ -146,8 +150,8 @@ public class ServerHelper {
 	    @Override
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
-	        if (cacheNum!=-1)
-	        	cache[cacheNum]=finalResult;
+	        if (cacheKey!=null)
+	        	cache.add(cacheKey, finalResult);
 	        if (call!=null){
 		        new Handler().post(new Runnable() {
 				    @Override

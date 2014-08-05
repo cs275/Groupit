@@ -132,7 +132,7 @@ public class CreateGroup extends Controller {
 		
 		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
 		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
-		final String username = FacebookHelper.getUserName();
+		final String username = FacebookHelper.getUserName(activity);
 		ServerHelper.newGroup(name.getText().toString(), description.getText().toString(), username, "", selectedCategory, username, new ServerHelper.Callback() {
 			
 			@Override

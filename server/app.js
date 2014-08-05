@@ -76,7 +76,7 @@ app.post('/joinGroup/', function(req, res){
 	for (var i=0; i<groups.length; i++){
 		if (groups[i].name == group){
 			groups[i].members.push(user);
-			fs.writeFile("./models/groups.json");
+			fs.writeFile("./models/groups.json", JSON.stringify(groups));
 			res.send("1");
 			return;
 		}
