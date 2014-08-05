@@ -62,7 +62,7 @@ app.post("/search/", function(req, res){
 	var query = req.param('query', null);
 	var matches = [];
 	for (var i=0; i<groups.length; i++){
-		if (groups[i].name.indexOf(query)!=-1) matches.push(groups[i].name);
+		if (groups[i].name.toLowerCase().indexOf(query.toLowerCase())!=-1) matches.push(groups[i].name);
 	}
 	if (matches.length == 0)
 		res.send("null");
@@ -106,7 +106,7 @@ app.post('/newGroup/', function(req, res) {
     res.send("Hello " + name);
 });
 
-app.get('/newMessage/', function(req, res){
+app.get('/sendMessage/', function(req, res){
 	var group = req.query.group,
 		user = req.query.user,
 		message = req.query.message;

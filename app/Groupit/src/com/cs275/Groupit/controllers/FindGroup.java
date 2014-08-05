@@ -63,10 +63,17 @@ public class FindGroup extends Controller {
 				ServerHelper.search(arg0, new ServerHelper.Callback() {
 					@Override
 					public void finished(Exception e, String result) {
-						if (result=="null") return;
+						if (result.equals("null")) {
+							initListView(new JsonArray());
+							return;
+						}
 						JsonParser jp = new JsonParser();
-				        JsonArray items = jp.parse(result).getAsJsonArray();
-				        initListView(items);
+						try{
+							JsonArray items = jp.parse(result).getAsJsonArray();
+				        	initListView(items);
+						}catch (IllegalStateException ex){
+							ex.printStackTrace();
+						}
 					}
 				});
 				return false;
