@@ -101,6 +101,42 @@ public class ServerHelper {
 				"user", userName,
 				"group", groupName);
 	}
+	public static void sendMessage(Context c, String message, String groupName, Callback...call){
+		RequestTask task=new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/sendMessage/",
+				"user", FacebookHelper.getUserName(c),
+				"message", message,
+				"group", groupName);
+	}
+	/**
+	 * Gets a list of the first 100 messages for a Group.
+	 * @param groupName
+	 * 		The name  of the group to get messages from.
+	 * @param call
+	 * 		The callback for when the request is finished.
+	 * @see	getMessages(String groupName, int start, int end, Callback...call)
+	 */
+	public static void getMessages(String groupName, Callback...call){
+		getMessages(groupName, 0, 100, call);
+	}
+	
+	/**
+	 * Gets a list of messages for a Group.
+	 * @param groupName	The name of the group.
+	 * @param start	The message to start from.
+	 * @param end	The message to end on (-1 for last index)
+	 * @param call	Callback for when the request is finished.
+	 */
+	public static void getMessages(String groupName, int start, int end, Callback...call){
+		RequestTask task=new RequestTask();
+		task.addCallback(call[0]);
+		task.execute(baseUrl+"/getMessages/",
+				"group", groupName,
+				"start", Integer.toString(start),
+				"end", Integer.toString(end));
+	}
 	
 	public static class RequestTask extends AsyncTask<String, String, String>{
 		private Callback call=null;
