@@ -53,6 +53,21 @@ app.post('/getGroupsForUser/', function(req, res){
 		res.send(memberOf);
 });
 
+app.post('/getGroup/', function(req, res){
+	var group = req.param('user', null),
+		memberOf = [];
+	for (var i=0; i<groups.length; i++){
+		if (group[i].name==group){
+			memberOf.push(groups[i]);
+		}
+	}
+	if (memberOf.length==0)
+		res.send("null");
+	else
+		res.send(memberOf);
+});
+
+
 app.post('/getMembers/', function(req, res){
 	var group = req.param('group', null);
 	res.send(getGroup(group)["members"]);

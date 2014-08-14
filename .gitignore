@@ -23,6 +23,7 @@ server/node_modules/
 server/models/groups.json
 app/TicTacToe
 app/Dropbox
+app/Twitter
 
 # Local configuration file (sdk path, etc)
 local.properties

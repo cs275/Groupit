@@ -23,8 +23,9 @@ import android.os.Handler;
 import android.util.Log;
 
 public class ServerHelper {
-	private static final String baseUrl = "http://10.0.2.2:3000";
-	//private static final String baseUrl = "http://162.243.124.12:8000";
+	//private static final String baseUrl = "http://10.0.2.2:3000";
+	private static final String baseUrl = "http://162.243.124.12:8000";
+	public Boolean useCache = false;
 	
 	//private static String[] cache = new String[5];
 	public static Cache cache;
@@ -48,9 +49,9 @@ public class ServerHelper {
 	}
 	public void getAllGroups(Callback...call){
 		String cacheKey = "allGroups";
-		
-		if (cache.get(cacheKey)!=null)
-			call[0].finished(null, (String)cache.get(cacheKey));
+		if (useCache)
+			if (cache.get(cacheKey)!=null)
+				call[0].finished(null, (String)cache.get(cacheKey));
 		RequestTask task=new RequestTask();
 		task.addCache(cacheKey);
 		if (call.length>0)
@@ -59,8 +60,9 @@ public class ServerHelper {
 	}
 	public void getAllGroupNames(Callback...call){
 		String cacheKey = "allGroupNames";
-		if (cache.get(cacheKey)!=null)
-			call[0].finished(null, (String)cache.get(cacheKey));
+		if (useCache)
+			if (cache.get(cacheKey)!=null)
+				call[0].finished(null, (String)cache.get(cacheKey));
 		RequestTask task=new RequestTask();
 		task.addCache(cacheKey); 
 		if (call.length>0)
@@ -69,8 +71,9 @@ public class ServerHelper {
 	}
 	public void getGroupsForUser(String userName, Callback...call){
 		String cacheKey = "groupsForUser";
-		if (cache.get(cacheKey)!=null)
-			call[0].finished(null, (String)cache.get(cacheKey));
+		if (useCache)
+			if (cache.get(cacheKey)!=null)
+				call[0].finished(null, (String)cache.get(cacheKey));
 		
 		RequestTask task=new RequestTask();
 		task.addCache(cacheKey);
