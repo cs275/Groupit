@@ -24,6 +24,8 @@ server/models/groups.json
 app/TicTacToe
 app/Dropbox
 app/Twitter
+app/Septa
+app/Weather
 
 # Local configuration file (sdk path, etc)
 local.properties
