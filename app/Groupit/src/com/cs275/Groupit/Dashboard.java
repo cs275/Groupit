@@ -106,6 +106,9 @@ public class Dashboard extends ActionBarActivity implements
 		case 3:
 			mTitle = getString(R.string.title_section3);
 			break;
+		case 4:
+			mTitle = getString(R.string.title_section4);
+			break;
 		}
 	}
 
@@ -182,6 +185,9 @@ public class Dashboard extends ActionBarActivity implements
 				break;
 			case 3:
 				v= new CreateGroup(getActivity());
+				break;
+			case 4:
+				v = new Messaging(getActivity());
 				break;
 			}
 			if (v!=null)
