@@ -84,6 +84,7 @@ public class Login extends Activity {
         	Session session = Session.openActiveSessionWithAccessToken(Login.this, access, statusCallback);
     		startActivity(i);
     		finish();
+    		return;
         }
         Session session = Session.getActiveSession();
         
