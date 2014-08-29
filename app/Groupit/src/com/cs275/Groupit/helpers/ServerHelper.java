@@ -41,9 +41,9 @@ public class ServerHelper {
 		task.execute(baseUrl+"/newGroup/",
 				"name", name, 
 				"description", description,
-				"admin", admin,
+				"admin", admin, 
 				"location", location,
-				"category", category, 
+				"category", category,
 				"user", user);
 		return true;
 	}

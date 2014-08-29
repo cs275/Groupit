@@ -36,7 +36,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cs275.Groupit.helpers.Cache;
 import com.cs275.Groupit.helpers.FacebookHelper;
+import com.facebook.AccessToken;
 import com.facebook.HttpMethod;
 import com.facebook.LoggingBehavior;
 import com.facebook.Request;
@@ -73,7 +75,16 @@ public class Login extends Activity {
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-
+        
+        Cache cache = new Cache(Login.this, "FacebookLogin");
+        String token = (String)cache.get("token");
+        if (token!=null){
+        	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
+        	AccessToken access = AccessToken.createFromExistingAccessToken(token, null, null, null, publishPermissions);
+        	Session session = Session.openActiveSessionWithAccessToken(Login.this, access, statusCallback);
+    		startActivity(i);
+    		finish();
+        }
         Session session = Session.getActiveSession();
         
         if (session == null) {
@@ -86,6 +97,7 @@ public class Login extends Activity {
             
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
+            	cache.add("token", session.getAccessToken());
             	List<String> publishPermissions = Arrays.asList("public_profile","user_groups");
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback).setPermissions(publishPermissions));
                 
