@@ -9,6 +9,7 @@
     <string name="title_section1">My Groups</string> 
     <string name="title_section2">Find Groups</string>
     <string name="title_section3">Create a Group</string>
+    <string name="title_section4">Messaging</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">go home</string>
@@ -28,5 +29,6 @@
         <item>Family</item>
         <item>Other</item>
     </string-array>
+    
     
 </resources>
