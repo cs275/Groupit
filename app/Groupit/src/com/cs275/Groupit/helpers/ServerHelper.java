@@ -164,7 +164,7 @@ public class ServerHelper {
 				post.setEntity(new UrlEncodedFormEntity(pairs));
 				HttpResponse response = client.execute(post);
 				String result = EntityUtils.toString(response.getEntity());
-				Log.d("The resault: ", result);
+				Log.d("The result: ", result);
 				finalResult = result;
 				
 			} catch (UnsupportedEncodingException e) { 

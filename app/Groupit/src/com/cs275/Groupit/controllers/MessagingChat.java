@@ -4,68 +4,96 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.cs275.Groupit.R;
+import com.cs275.Groupit.helpers.FacebookHelper;
+import com.cs275.Groupit.helpers.ServerHelper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.cs275.Groupit.R;
-import com.cs275.Groupit.helpers.ServerHelper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-
-public class Messaging extends Controller{
+public class MessagingChat extends Controller{
 	Activity activity;
-	Button button;
+	String GroupName;
 	String item;
-	public Messaging(Activity dashboard) {
+	
+	public MessagingChat(Activity dashboard, String groupname) {
 		activity = dashboard;
+		GroupName = groupname;
 	}
 
-	@Override
-	public View inflate(final LayoutInflater inflator, final ViewGroup container) {
-		rootView = inflator.inflate(R.layout.message_center,
-				container, false);
+	public View inflate(LayoutInflater inflator, ViewGroup container) {
+		rootView = inflator.inflate(R.layout.messaging,
+				container, true);
 		
-		button = (Button) rootView.findViewById(R.id.goButton);
+		TextView text = (TextView) rootView.findViewById(R.id.Group_name);
+		text.setText(GroupName);
+		
+		Button button = (Button) rootView.findViewById(R.id.createButton);
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				switch(v.getId()){
-				case R.id.goButton:
-					container.removeAllViews();
+				case R.id.createButton:
+					EditText text = (EditText) rootView.findViewById(R.id.SendMessage);
+					final String message = text.getText().toString();
 					
-					new MessagingChat(activity, item).inflate(inflator, container);
+					create(GroupName, message);
 					break;
 				}
 			}
 		});
 		
-		new ServerHelper(activity).getAllGroupNames(new ServerHelper.Callback(){
+		new ServerHelper(activity);
+		ServerHelper.getMessages(GroupName, new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
-				if (g==null || g.equals("null")){
+				if (g == null || g.equals("null")){
 					return;
 				}
+				System.out.println(g);
 				JsonParser jp = new JsonParser();
 		        JsonArray items = jp.parse(g).getAsJsonArray();
+		        if( items.equals(null) || items.size() == 0 )
+		        	return;
 		        initListView(items);
 			} 
 		});
 		
 		return rootView;
+	}
+
+	public void create( String groupname, String message ){
+		
+		ServerHelper.sendMessage(activity , message, groupname, new ServerHelper.Callback() {
+			@Override
+			public void finished(Exception e, String resault) {
+				Toast.makeText(activity, "Message Sent!", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	private void initListView(JsonArray items){
@@ -88,17 +116,7 @@ public class Messaging extends Controller{
 		});
 	}
 	
-	public void create(){
-		Spinner category = (Spinner) rootView.findViewById(R.id.category);
-		
-		Resources res = activity.getResources();
-		String[] categories = res.getStringArray(R.array.category_array);
-		
-		String selectedCategory = categories[category.getSelectedItemPosition()];
-	}
-	
 	private class StableArrayAdapter extends ArrayAdapter<String> {
-
 	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
 
 	    public StableArrayAdapter(Context context, int textViewResourceId,
@@ -119,7 +137,5 @@ public class Messaging extends Controller{
 	    public boolean hasStableIds() {
 	      return true;
 	    }
-
 	  }
-
 }

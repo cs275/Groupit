@@ -96,7 +96,7 @@ public class CreateGroup extends Controller {
 	
 	private void fillFields(JSONObject group) throws JSONException{
 		Spinner category = (Spinner) rootView.findViewById(R.id.category);
-		final EditText name = (EditText) rootView.findViewById(R.id.group_name);
+		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
 		final EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
 	
 		name.setText(group.getString("name"));
@@ -130,7 +130,7 @@ public class CreateGroup extends Controller {
 		
 		String selectedCategory = categories[category.getSelectedItemPosition()];
 		
-		final EditText name = (EditText) rootView.findViewById(R.id.group_name);
+		final EditText name = (EditText) rootView.findViewById(R.id.name_select);
 		EditText description = (EditText) rootView.findViewById(R.id.descriptionField);
 		final String username = FacebookHelper.getUserName(activity);
 		ServerHelper.newGroup(name.getText().toString(), description.getText().toString(), username, "", selectedCategory, username, new ServerHelper.Callback() {
