@@ -67,20 +67,43 @@ public class MessagingChat extends Controller{
 			}
 		});
 		
-		new ServerHelper(activity);
+		Button button1 = (Button) rootView.findViewById(R.id.refresh);
+		button1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch(v.getId()){
+				case R.id.refresh:
+					ServerHelper.getMessages(GroupName, new ServerHelper.Callback(){
+						@Override
+						public void finished(Exception e, String g) {
+							if (g == null || g.equals("null")){
+								return;
+							}
+							System.out.println(g);
+							JsonParser jp = new JsonParser();
+					        JsonArray items = jp.parse(g).getAsJsonArray();
+					        if( items.equals(null) || items.size() == 0 )
+					        	return;
+					        initListView(items);
+						}
+					});
+					break;
+				}
+			}
+		});
+		
 		ServerHelper.getMessages(GroupName, new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
 				if (g == null || g.equals("null")){
 					return;
 				}
-				System.out.println(g);
 				JsonParser jp = new JsonParser();
 		        JsonArray items = jp.parse(g).getAsJsonArray();
 		        if( items.equals(null) || items.size() == 0 )
 		        	return;
 		        initListView(items);
-			} 
+			}
 		});
 		
 		return rootView;
@@ -97,23 +120,15 @@ public class MessagingChat extends Controller{
 	}
 	
 	private void initListView(JsonArray items){
-		final ListView listview = (ListView) rootView.findViewById(R.id.listview);
+		final ListView listview = (ListView) rootView.findViewById(R.id.listView1);
 
 		final ArrayList<String> list = new ArrayList<String>();
 		for (int i = 0; i < items.size(); ++i) {
-			list.add(items.get(i).getAsString());
+			list.add(items.get(i).getAsJsonObject().get("message").toString());
 		}
 		final StableArrayAdapter adapter = new StableArrayAdapter(activity,
 				android.R.layout.simple_list_item_1, list);
 		listview.setAdapter(adapter);
-
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@SuppressLint("NewApi") @Override
-			public void onItemClick(AdapterView<?> parent, final View view,
-					int position, long id) {
-				item = (String) ((TextView)view).getText();
-			}
-		});
 	}
 	
 	private class StableArrayAdapter extends ArrayAdapter<String> {
