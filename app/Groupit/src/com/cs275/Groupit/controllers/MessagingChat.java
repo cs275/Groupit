@@ -62,6 +62,7 @@ public class MessagingChat extends Controller{
 					final String message = text.getText().toString();
 					
 					create(GroupName, message);
+					text.setText("");
 					break;
 				}
 			}
