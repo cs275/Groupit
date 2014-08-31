@@ -75,18 +75,18 @@
 
     <Button
         android:id="@+id/createButton"
+        style="@style/custom_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_below="@+id/mainTable"
         android:layout_centerHorizontal="true"
-        android:onClick="create"
         android:layout_marginTop="25dp"
+        android:onClick="create"
         android:text="Create!" />
 
     <Button
         android:id="@+id/importButton"
+       	style="@style/custom_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
        	android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"

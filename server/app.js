@@ -121,7 +121,7 @@ app.post('/newGroup/', function(req, res) {
     res.send("Hello " + name);
 });
 
-app.get('/sendMessage/', function(req, res){
+app.post('/sendMessage/', function(req, res){
 	var group = req.query.group,
 		user = req.query.user,
 		message = req.query.message;
@@ -135,7 +135,7 @@ app.get('/sendMessage/', function(req, res){
 	fs.writeFile("./models/messages.json", JSON.stringify(groups))
 });
 
-app.get('/getMessages/', function(req, res){
+app.post('/getMessages/', function(req, res){
 	var group = req.query.group,
 		start = req.query.start||0;
 		end = req.query.end||100;

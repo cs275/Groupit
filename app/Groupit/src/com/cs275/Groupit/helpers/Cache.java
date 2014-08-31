@@ -21,6 +21,8 @@ public final class Cache{
 	private HashMap<String, Serializable> cache;
 	private Context context;
 	private String key;
+	
+	
 	public Cache(Context c, String _key){
 		context = c;
 		key=_key;
@@ -28,7 +30,7 @@ public final class Cache{
 	}
 	public Object get(String key){
 		if (cache!=null)
-			return cache.get(key);
+			return cache.get(key); 
 		return null;
 	}
 	public void add(String key, Object value){

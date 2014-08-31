@@ -40,13 +40,17 @@ public class CreateGroup extends Controller {
 	}
 
 	@Override
-	public View inflate(LayoutInflater inflator, ViewGroup container) {
+	public View inflate(final LayoutInflater inflator, final ViewGroup container) {
 		rootView = inflator.inflate(R.layout.create_group,
 				container, false);
+		
+		
 		Button button = (Button) rootView.findViewById(R.id.createButton);
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				container.removeAllViews();
+				//new FindGroup(activity).inflate(inflator, container);
 				create();
 			}
 		});
