@@ -122,25 +122,25 @@ app.post('/newGroup/', function(req, res) {
 });
 
 app.post('/sendMessage/', function(req, res){
-	var group = req.query.group,
-		user = req.query.user,
-		message = req.query.message;
+	var group = req.param('group', null),
+	user = req.param('user', null),
+	message = req.param('message', null);
 	if (messages[group]){
 		messages[group].data.push({"user":user,"message":message});
 		res.send("Success")
 	}else{
-		messages.push({"data":[{"user":user,"message":message}]});
+		messages[group]={"data":[{"user":user,"message":message}]};
 		res.send("Created new thread");
 	}
-	fs.writeFile("./models/messages.json", JSON.stringify(groups))
+	fs.writeFile("./models/messages.json", JSON.stringify(messages))
 });
 
 app.post('/getMessages/', function(req, res){
-	var group = req.query.group,
-		start = req.query.start||0;
-		end = req.query.end||100;
+	var group = req.param('group', null),
+	start = req.param('start', null)||0,
+	end = req.param('end', null)||100;
 	if (messages[group])
-		res.send( messages[group].slice(start,end));
+		res.send( messages[group].data.slice(start,end));
 	else
 		res.send([]);
 });
