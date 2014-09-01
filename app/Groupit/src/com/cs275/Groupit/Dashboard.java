@@ -68,6 +68,16 @@ public class Dashboard extends ActionBarActivity implements
 		//userName.setText("Some Text");
 
 	}
+	
+    @Override
+    public void onBackPressed() {
+    	MyGroups myGroups = new MyGroups(this);
+    	myGroups.isRoot=true;
+    	ViewGroup container = (ViewGroup)findViewById(R.id.container);
+    	container.removeAllViews();
+    	myGroups.inflate(getLayoutInflater(), container);
+        super.onBackPressed();
+    }
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
