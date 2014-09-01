@@ -15,6 +15,7 @@ import com.google.gson.JsonParser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,21 +35,36 @@ public class FindGroup extends Controller {
 	}
 
 	@Override
-	public View inflate(LayoutInflater inflator, ViewGroup container) {
-		rootView = inflator.inflate(R.layout.find_group,
-				container, false);
-		
-		new ServerHelper(activity).getAllGroupNames(new ServerHelper.Callback(){
-			@Override
-			public void finished(Exception e, String g) {
-				if (g==null || g.equals("null")){
-					return;
-				}
-				JsonParser jp = new JsonParser();
-		        JsonArray items = jp.parse(g).getAsJsonArray();
-		        initListView(items);
-			} 
-		});
+	public View inflate(final LayoutInflater inflator, final ViewGroup container) {
+		rootView = inflator.inflate(R.layout.find_group, container, false);
+		final ListView listview = (ListView) rootView.findViewById(R.id.listview);
+
+		new ServerHelper(activity).getAllGroupNames(new ServerHelper.Callback() {
+					@Override
+					public void finished(Exception e, String g) {
+						if (g == null || g.equals("null")) {
+							return;
+						}
+						JsonParser jp = new JsonParser();
+						JsonArray items = jp.parse(g).getAsJsonArray();
+						initListView(items);
+
+						listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@SuppressLint("NewApi")
+							@Override
+							public void onItemClick(AdapterView<?> parent,
+									final View view, int position, long id) {
+								final String item = (String) ((TextView) view)
+										.getText();
+								container.removeAllViews();
+								container.addView(new GroupDetails(activity, item).inflate(
+										inflator, container));
+							}
+
+						});
+					}
+				});
 		
 		SearchView search = (SearchView) rootView.findViewById(R.id.searchView);
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -93,25 +109,6 @@ public class FindGroup extends Controller {
 				android.R.layout.simple_list_item_1, list);
 		listview.setAdapter(adapter);
 
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@SuppressLint("NewApi") @Override
-			public void onItemClick(AdapterView<?> parent, final View view,
-					int position, long id) {
-				final String item = (String) ((TextView)view).getText();
-				final String username = FacebookHelper.getUserName(activity);
-				ServerHelper.joinGroup(item, username, new ServerHelper.Callback() {
-					
-					@Override
-					public void finished(Exception e, String result) {
-						if (result.equals("1")){
-							Toast.makeText(activity, "Joined "+item, Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-			}
-
-		});
 	}
 	
 	private class StableArrayAdapter extends ArrayAdapter<String> {

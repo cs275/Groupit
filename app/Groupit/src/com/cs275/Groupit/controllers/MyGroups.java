@@ -14,12 +14,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +34,7 @@ public class MyGroups extends Controller{
 	}
 	
 	@Override
-	public View inflate(LayoutInflater inflator, ViewGroup container) {
+	public View inflate(final LayoutInflater inflator, final ViewGroup container) {
 		rootView = inflator.inflate(R.layout.fragment_dashboard,
 				container, isRoot);
 		
@@ -57,6 +59,22 @@ public class MyGroups extends Controller{
 						android.R.layout.simple_list_item_1, list);
 				ListView listview = (ListView) activity.findViewById(R.id.GroupList);
 				listview.setAdapter(adapter);
+				
+				listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@SuppressLint("NewApi")
+					@Override
+					public void onItemClick(AdapterView<?> parent,
+							final View view, int position, long id) {
+						final String item = (String) ((TextView) view)
+								.getText();
+						container.removeAllViews();
+						container.addView(new GroupDetails(activity, item).inflate(
+								inflator, container));
+					}
+
+				});
+				
 				v.setText(content);
 			} 
 		}); 

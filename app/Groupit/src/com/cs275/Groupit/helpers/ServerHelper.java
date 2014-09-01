@@ -47,6 +47,14 @@ public class ServerHelper {
 				"user", user);
 		return true;
 	}
+	
+	public void getGroup(String groupName, Callback...call){
+		RequestTask task = new RequestTask();
+		if (call.length>0)
+			task.addCallback(call[0]);
+		task.execute(baseUrl+"/getGroup/", "user", groupName);
+	}
+	
 	public void getAllGroups(Callback...call){
 		String cacheKey = "allGroups";
 		if (useCache)
