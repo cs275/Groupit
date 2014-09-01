@@ -88,6 +88,7 @@ public class NavigationDrawerFragment extends Fragment {
 		
 		
 	}
+	
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
