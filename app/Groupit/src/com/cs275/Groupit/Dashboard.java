@@ -190,8 +190,10 @@ public class Dashboard extends ActionBarActivity implements
 				v = new Messaging(getActivity());
 				break;
 			}
-			if (v!=null)
+			if (v!=null){
+				container.removeAllViews();
 				root=v.inflate(inflater, container);
+			}
 			
 			
 			return root;
