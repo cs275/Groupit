@@ -49,9 +49,11 @@ public class CreateGroup extends Controller {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				container.removeAllViews();
-				//new FindGroup(activity).inflate(inflator, container);
 				create();
+				container.removeAllViews();
+				MyGroups myGroups = new MyGroups(activity);
+				myGroups.isRoot = true;
+				myGroups.inflate(inflator, container);
 			}
 		});
 		Button importGroup = (Button) rootView.findViewById(R.id.importButton);
