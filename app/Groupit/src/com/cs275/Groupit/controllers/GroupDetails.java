@@ -34,7 +34,7 @@ public class GroupDetails extends Controller{
 	}
 	
 	@Override
-	public View inflate(LayoutInflater inflator, ViewGroup container) {
+	public View inflate(LayoutInflater inflator, final ViewGroup container) {
 		
 		rootView = inflator.inflate(R.layout.group_home,
 				container, false);
@@ -43,6 +43,14 @@ public class GroupDetails extends Controller{
 		final TextView groupDescription = (TextView)(rootView.findViewById(R.id.groupDescription));
 		final ListView groupMembers = (ListView)(rootView.findViewById(R.id.memberList));
 		final Button joinButton = (Button)(rootView.findViewById(R.id.joinButton));
+		Button toMessages = (Button)rootView.findViewById(R.id.toMessages);
+		toMessages.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				container.removeAllViews();
+				new MessagingChat(activity, groupName).inflate(activity.getLayoutInflater(), container);
+			}
+		});
 		new ServerHelper(activity).getGroup(groupName, new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {

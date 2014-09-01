@@ -58,6 +58,15 @@
             android:layout_marginTop="40dp" >
         </ListView>
 
+        <Button
+            android:id="@+id/toMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/joinButton"
+            android:layout_alignBottom="@+id/joinButton"
+            android:layout_toLeftOf="@+id/joinButton"
+            android:text="Messages" />
+
     </RelativeLayout>
 
 </LinearLayout>
