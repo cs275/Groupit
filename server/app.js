@@ -57,7 +57,7 @@ app.post('/getGroup/', function(req, res){
 	var group = req.param('user', null),
 		memberOf = [];
 	for (var i=0; i<groups.length; i++){
-		if (group[i].name==group){
+		if (groups[i].name===group){
 			memberOf.push(groups[i]);
 		}
 	}

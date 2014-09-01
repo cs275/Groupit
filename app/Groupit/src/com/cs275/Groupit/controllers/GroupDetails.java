@@ -43,31 +43,31 @@ public class GroupDetails extends Controller{
 		final TextView groupDescription = (TextView)(rootView.findViewById(R.id.groupDescription));
 		final ListView groupMembers = (ListView)(rootView.findViewById(R.id.memberList));
 		final Button joinButton = (Button)(rootView.findViewById(R.id.joinButton));
-//		new ServerHelper(activity).getGroup(groupName, new ServerHelper.Callback(){
-//			@Override
-//			public void finished(Exception e, String g) {
-//				System.out.print("g");
-//				if (g==null || e!=null || g.equals("null")){
-//					groupTitle.setText("Error");
-//					return;
-//				}
-//				JsonObject group = new JsonParser().parse(g).getAsJsonObject();
-//				
-//				groupTitle.setText(group.get("groupName").getAsString());
-//				groupDescription.setText(group.get("description").getAsString());
-//				
-//				JsonArray members = group.get("members").getAsJsonArray();
-//				
-//				final ArrayList<String> list = new ArrayList<String>();
-//				for (int i = 0; i < members.size(); ++i) {
-//					list.add(members.get(i).getAsString());
-//				}
-//				final StableArrayAdapter adapter = new StableArrayAdapter(activity,
-//					android.R.layout.simple_list_item_1, list);
-//				groupMembers.setAdapter(adapter);
-//				
-//			} 
-//		});
+		new ServerHelper(activity).getGroup(groupName, new ServerHelper.Callback(){
+			@Override
+			public void finished(Exception e, String g) {
+				System.out.print("g");
+				if (g==null || e!=null || g.equals("null")){
+					groupTitle.setText("Error");
+					return;
+				}
+				JsonObject group = new JsonParser().parse(g).getAsJsonArray().get(0).getAsJsonObject();
+				
+				groupTitle.setText(group.get("name").getAsString());
+				groupDescription.setText(group.get("description").getAsString());
+				
+				JsonArray members = group.get("members").getAsJsonArray();
+				
+				final ArrayList<String> list = new ArrayList<String>();
+				for (int i = 0; i < members.size(); ++i) {
+					list.add(members.get(i).getAsString());
+				}
+				final StableArrayAdapter adapter = new StableArrayAdapter(activity,
+					android.R.layout.simple_list_item_1, list);
+				groupMembers.setAdapter(adapter);
+				
+			} 
+		});
 		
 		String g = "{ \"members\": [ \"1\", \"2\", \"3\" ], \"groupName\": \"TestGroupy\", \"description\": \"This is the json I generated to test my page because server stuff not working atm\"}";
 		if (g==null || g.equals("null")){
