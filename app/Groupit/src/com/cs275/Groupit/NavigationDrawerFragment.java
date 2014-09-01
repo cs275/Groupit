@@ -1,5 +1,7 @@
 package com.cs275.Groupit;
 
+import com.cs275.Groupit.controllers.MyGroups;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -276,8 +278,10 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 		
 		if (item.getItemId() == R.id.action_example) {
-			Toast.makeText(getActivity(), "Going Home...", Toast.LENGTH_SHORT)
-					.show();
+			((ViewGroup)getActivity().findViewById(R.id.container)).removeAllViews();
+			MyGroups myGroups = new MyGroups(getActivity());
+			myGroups.isRoot = true;
+			myGroups.inflate(getActivity().getLayoutInflater(), (ViewGroup)getActivity().findViewById(R.id.container));
 			return true;
 		}
 

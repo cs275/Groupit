@@ -18,15 +18,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MyGroups extends Controller{
+	public Boolean isRoot = false;
 	Activity activity;
 	public MyGroups(Activity dashboard) {
 		activity = dashboard;
 	}
-
+	
 	@Override
 	public View inflate(LayoutInflater inflator, ViewGroup container) {
 		rootView = inflator.inflate(R.layout.fragment_dashboard,
-				container, false);
+				container, isRoot);
 		
 		final TextView v = (TextView)(rootView.findViewById(R.id.name)); 
 		//Log.d("Username: ", new FacebookHelper(FacebookHelper.getSession(activity)).getUserName(activity));
