@@ -18,6 +18,7 @@ appcompat_v7/gen/
 .metadata/
 # Gradle files
 .gradle/
+app/Groupit/.classpath
 build/
 server/node_modules/
 server/models/groups.json
