@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cs275.Groupit.R;
+import com.cs275.Groupit.helpers.FacebookHelper;
 import com.cs275.Groupit.helpers.ServerHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -53,7 +54,7 @@ public class Messaging extends Controller{
 			}
 		});
 		
-		new ServerHelper(activity).getAllGroupNames(new ServerHelper.Callback(){
+		new ServerHelper(activity).getGroupsForUser(FacebookHelper.getUserName(activity), new ServerHelper.Callback(){
 			@Override
 			public void finished(Exception e, String g) {
 				if (g==null || g.equals("null")){
