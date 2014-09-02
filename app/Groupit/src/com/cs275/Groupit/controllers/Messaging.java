@@ -40,19 +40,6 @@ public class Messaging extends Controller{
 		rootView = inflator.inflate(R.layout.message_center,
 				container, false);
 		
-		button = (Button) rootView.findViewById(R.id.goButton);
-		button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				switch(v.getId()){
-				case R.id.goButton:
-					container.removeAllViews();
-					
-					new MessagingChat(activity, item).inflate(inflator, container);
-					break;
-				}
-			}
-		});
 		
 		new ServerHelper(activity).getGroupsForUser(FacebookHelper.getUserName(activity), new ServerHelper.Callback(){
 			@Override
@@ -85,6 +72,9 @@ public class Messaging extends Controller{
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
 				item = (String) ((TextView)view).getText();
+				ViewGroup container = (ViewGroup)activity.findViewById(R.id.container);
+				container.removeAllViews();
+				new MessagingChat(activity, item).inflate(activity.getLayoutInflater(), container);
 			}
 		});
 	}
