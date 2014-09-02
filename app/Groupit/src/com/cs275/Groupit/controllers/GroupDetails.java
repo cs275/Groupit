@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +43,8 @@ public class GroupDetails extends Controller{
 		final TextView groupTitle = (TextView)(rootView.findViewById(R.id.groupName));
 		final TextView groupDescription = (TextView)(rootView.findViewById(R.id.groupDescription));
 		final ListView groupMembers = (ListView)(rootView.findViewById(R.id.memberList));
-		final Button joinButton = (Button)(rootView.findViewById(R.id.joinButton));
-		Button toMessages = (Button)rootView.findViewById(R.id.toMessages);
+		final ImageButton joinButton = (ImageButton)(rootView.findViewById(R.id.joinButton));
+		ImageButton toMessages = (ImageButton)rootView.findViewById(R.id.toMessages);
 		toMessages.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

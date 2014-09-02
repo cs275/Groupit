@@ -14,30 +14,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="24dp"
+            android:layout_toLeftOf="@+id/toMessages"
+            android:padding="5dp"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <Button
-            android:id="@+id/joinButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/groupName"
-            android:layout_alignBottom="@+id/groupName"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="29dp"
-            android:text="Join" />
-
-        <TextView
-            android:id="@+id/groupDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/groupName"
-            android:layout_below="@+id/joinButton"
-            android:layout_marginTop="81dp"
-            android:text="TextView" />
 
         <TextView
             android:id="@+id/textView1"
@@ -45,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/groupDescription"
             android:layout_below="@+id/groupDescription"
-            android:layout_marginTop="132dp"
+            android:layout_marginTop="100dp"
             android:text="Members"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -55,17 +35,46 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView1"
             android:layout_below="@+id/textView1"
-            android:layout_marginTop="40dp" >
+            android:layout_marginTop="10dp" >
         </ListView>
 
-        <Button
-            android:id="@+id/toMessages"
+        <RelativeLayout
+            android:id="@+id/button_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/joinButton"
-            android:layout_alignBottom="@+id/joinButton"
+            android:layout_below="@+id/groupName"
+            android:layout_centerHorizontal="true" >
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/groupDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/groupName"
+            android:layout_below="@+id/button_container"
+            android:layout_marginTop="15dp"
+            android:text="TextView" />
+
+        <ImageButton
+            android:id="@+id/toMessages"
+            android:background="@drawable/message"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_toLeftOf="@+id/joinButton"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:text="Messages" />
+
+        <ImageButton
+            android:id="@+id/joinButton"
+            android:background="@drawable/add"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Join" />
 
     </RelativeLayout>
 
